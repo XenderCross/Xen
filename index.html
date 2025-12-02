@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>XEN - Homee</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #9658e7;
+      --muted: rgba(255,255,255,0.9);
+      --glass: rgba(0,0,0,0.45);
+      --card: rgba(10,10,10,0.6);
+      --blur: 10px;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, system-ui, Arial;
+    }
+
+    body {
+      background-image: url('https://i.pinimg.com/originals/32/20/f9/3220f92c6e309a55730d016c84bb7783.gif');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      image-rendering: pixelated;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55));
+      pointer-events: none;
+    }
+
+    /* CARD (DRAG ENABLED) */
+    .card {
+      width: min(920px, 96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(var(--blur));
+      border-radius: 18px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      align-items: center;
+      animation: float 3s ease-in-out infinite;
+      position: absolute;
+      cursor: grab;
+    }
+
+    .card:active { cursor: grabbing; }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar .pixel-frame {
+      width: 92%;
+      height: 92%;
+      background-image: url('https://i.pinimg.com/736x/bb/11/19/bb11197ad2cd16eca6c24c98914d0a2d.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: contrast(1.05) saturate(1.1);
+      animation: pulse 2.5s infinite;
+      image-rendering: pixelated;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); } 
+      50% { transform: scale(1.03); }
+    }
+
+    h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 20px;
+      margin: 0 0 10px;
+      color: var(--accent);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+
+    .bio {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* CHIPS: NOW ALIGNED UNDER XEN */
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      justify-content: flex-start; /* FIXED */
+    }
+
+    .chip {
+      background: var(--card);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      transition: 0.25s;
+    }
+
+    .chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .chip svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.95;
+    }
+
+    /* SOCIAL LINKS */
+    .links {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      filter: brightness(1.15);
+    }
+
+    .tagline {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));
+      display: inline-block;
+    }
+
+    .footer {
+      grid-column: 1 / -1;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255,255,255,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media (max-width:760px) {
+      .card { grid-template-columns: 1fr; }
+      .avatar { width: 160px; height: 160px; margin: 0 auto; }
+      .links { flex-wrap: wrap; }
+      .footer { flex-direction: column; gap: 10px; }
+    }
+
+    .typing { display: inline; }
+    .typing::after {
+      content: '|';
+      animation: blink 0.7s infinite;
+      color: var(--accent);
+    }
+    @keyframes blink { 0%,50%,100% { opacity:1; } 25%,75% { opacity:0; } }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <main class="card">
+    
+    <aside>
+      <div class="avatar">
+        <div class="pixel-frame"></div>
+      </div>
+      <div style="margin-top:14px;text-align:center">
+        <div class="tagline">I am me.</div>
+      </div>
+    </aside>
+
+    <section>
+      <h1>XEN</h1>
+      <p class="bio typing" id="bio"></p>
+
+      <div class="meta">
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 19a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3l1-3 1 3h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H6z"></path></svg>
+          Playing: ?!
+        </div>
+
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Programming: ?!
+        </div>
+      </div>
+
+      <div class="footer">
+
+        <div class="links">
+
+          <a class="link-btn" href="#">
+            <img src="https://cdn.worldvectorlogo.com/logos/discord-6.svg" width="20" height="20">
+            Discord
+          </a>
+
+          <a class="link-btn" href="https://www.instagram.com/_xender_cross_/" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="20" height="20">
+            Instagram
+          </a>
+
+          <a class="link-btn" href="https://steamcommunity.com/profiles/76561199131714901" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" width="20" height="20">
+            Steam
+          </a>
+
+          <a class="link-btn" href="https://open.spotify.com/user/31quhkk3qjg4jxpj6t6uiscfgynu" target="_blank">
+            <img src="https://raw.githubusercontent.com/XenderCross/Xen/4c690c5b544ff207635340b0e6f49cd767ff1097/spotify-icon-logo.svg" width="20" height="20">
+            Spotify
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const bioText = "Yes.";
+    let i = 0;
+    const bioEl = document.getElementById("bio");
+
+    function typeBio() {
+      if (i < bioText.length) {
+        bioEl.innerHTML += bioText.charAt(i);
+        i++;
+        setTimeout(typeBio, 35);
+      } else {
+        bioEl.classList.remove("typing");
+      }
+    }
+    typeBio();
+
+    /* DRAGGING */
+    const card = document.querySelector(".card");
+    let drag = false, offX = 0, offY = 0;
+
+    card.addEventListener("mousedown", e => {
+      drag = true;
+      offX = e.clientX - card.offsetLeft;
+      offY = e.clientY - card.offsetTop;
+    });
+
+    document.addEventListener("mousemove", e => {
+      if (!drag) return;
+      card.style.left = (e.clientX - offX) + "px";
+      card.style.top = (e.clientY - offY) + "px";
+    });
+
+    document.addEventListener("mouseup", () => drag = false);
+  </script>
+
+</body>
+</html>
